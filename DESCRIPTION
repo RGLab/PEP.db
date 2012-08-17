@@ -1,0 +1,12 @@
+Package: PEP.db
+Type: Package
+Title: Peptide microarray database
+Version: 0.1.0
+Author: Renan Sauteraud, Raphael Gottardo
+Maintainer: Renan Sauteraud <rsautera@fhcrc.org>
+Date: 2012-08-14
+Description: provide peptide collections for HIV and SIV
+License: Artistic-2.0
+Depends: R(>= 2.14.0)
+Imports: IRanges, methods
+biocViews: Microarray
