@@ -1,46 +1,11 @@
 ###
-# Read alignment from fasta file to get scales and sequences
-###
-readAlign<-function(filename=NULL)
-{
-	## EASY MODE:
-	## Assume first line is >HXB2, second is hxb2 seq, third is >newSeqID,  fourth is newSeq seq
-	if(is.null(filename)){filename<-system.file("extdata/alignment.fasta", package="PEP.db")}
-	alFile<-file(filename,open="r")
-	lineList<-list()
-	while(length(oneLine <- readLines(alFile, n = 2, warn = FALSE))) #n=4 means read four lines (negative value for whole file)
-	{
-		lineList<-c(lineList,oneLine)
-	}
-	close(alFile) #
-	refSeq<-lineList[[2]]
-	
-	len<-nchar(refSeq)
-	gapCnt<-0
-	refScale<-numeric(len)
-	for(i in 1:len)
-	{
-		if(substr(refSeq,i,i)=="-")
-		{
-			gapCnt<-gapCnt+1
-		}
-		refScale[i]<-i-gapCnt
-	}
-	refObj<-list()
-	refObj[[1]]<-refScale #the scale
-	refObj[[2]]<-refSeq   #the sequence with gaps
-	return(refObj)
-}
-
-
-###
 # convertPep
 #  Changes the position, aligned,, trimmed and peptide columns
 ###
 convertPep<-function(rd=PEP.db::pep_hxb2,filename=NULL,refScale=NULL)
 {
 	## Read the file
-	if(is.null(filename)){filename<-system.file("extdata/hxb2_7subtypes.fasta", package="PEP.db")}
+	if(is.null(filename)){filename<-system.file("extdata/ialignments/Musclehxb2_7subtypes.fasta", package="PEP.db")}
 	alFile<-file(filename,open="r")
 	lineList<-readLines(alFile, n=-1L)#16) #16 lines, i.e ref+7 subtypes
 	close(alFile) #

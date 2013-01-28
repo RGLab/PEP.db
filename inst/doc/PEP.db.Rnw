@@ -1,0 +1,55 @@
+%\VignetteIndexEntry{The PEP.db users guide}
+%\VignetteDepends{PEP.db}
+%\VignetteKeywords{Storage of peptide collections}
+%\VignettePackage{PEP.db}
+\documentclass[11pt]{article}
+\usepackage{Sweave}
+\usepackage{hyperref}
+\usepackage{underscore}
+\usepackage[hmargin=2cm, vmargin=3cm]{geometry}
+\SweaveOpts{keep.source=FALSE}
+
+\title{The PEP.db User Guide}
+\author{Renan Sauteraud\footnote{rsautera@fhcrc.org}}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+%\newpage
+
+\section{Introduction}
+\texttt{PEP.db} is an R package that stores peptide collections and provide functions for their analysis. It is intended to be used in conjunction with other packages for peptide analysis and visualisation: \texttt{HIV.db}, \texttt{pepStat} anf \texttt{Pviz}.
+
+As with any R package, it should first be loaded in the session
+<<loading-package>>=
+library(PEP.db)
+@
+
+\section{Peptide collections}
+\subsection{Information}
+For each peptide, the following collection display information about the position relative to the reference sequence, the alignment, the trimmed alignment, the zSums for the physicochemical properties as well as the clades where they can be found.
+
+\subsection{pep_hxb2}
+This collection is based on the alignment of the reference HIV sequence hxb2 and seven subtypes (clades) A, B, C, D, M, CRF01 and CRF02.
+
+\subsection{pep_hxb2JPT}
+This collection adds a few more clades to the previous one: CM244, CON_01_AE, LAI_A04321 and MN_DD328842. 
+
+\subsection{pep_mac239}
+This collection is for SIV, with the clades mac239 and E660.
+%%TODO: mb Recompute peptides for the LANL/mac239/E660 alignment
+
+\section{Loading the collections}
+The peptide collections can be loaded like any other R data.
+<<loading-collection>>=
+data(pep_hxb2)
+pep_hxb2
+@
+
+
+
+
+
+\end{document}

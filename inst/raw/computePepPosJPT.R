@@ -1,3 +1,4 @@
+#This is for the JPT with vaccine insert (I think..)
 pathToData<-"~/workspace/HIVdb/Slide-Comparison/data"
 
 
