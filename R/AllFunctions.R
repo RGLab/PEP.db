@@ -42,7 +42,7 @@ convertPep<-function(rd=PEP.db::pep_hxb2,filename=NULL,refScale=NULL)
 	}
 	
 	##Convert the positions of the rd
-	nrd<-coord2ext(rd,refScale)
+	nrd<-coord2ext(rd,refScale)#this Pviz:::coord2ext
 	
 	#t1<-system.time({
 	
