@@ -1,7 +1,4 @@
 ##
 ## NAMESPACE
 ##
-importClassesFrom(IRanges, RangedData, IRanges)
-importFrom(IRanges, RangedData, IRanges, "start<-", "end<-")
-#Export PEP.db stuff
-exportMethods("clade")
+importClassesFrom(pepStat, peptideSet)
