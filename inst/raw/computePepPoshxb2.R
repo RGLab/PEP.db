@@ -1,14 +1,22 @@
 library(gdata)
 library(Biostrings)
  
-JPTdesign<-read.xls("~/Programs/git/HIV.db/inst/extdata/JPT_Annotation_gp160_slide_18Mar11.xls")
+#reference
+JPTdesign<-read.xls(system.file("raw/JPT_Annotation_gp160_slide_18Mar11.xls", package="PEP.db"))
+#alignments
+align<-readLines(system.file("extdata/alignments/Musclehxb2_7subtypes1L.fasta", package="PEP.db"))
+cladeNames<-gsub(">", "", align[seq(1,16,2)])
+cladeSeqs<-align[seq(2,16,2)]
+names(cladeSeqs)<-cladeNames
+
+
 #########################################################
 ##1.pair wise alignment of consecutive peptide sequence to construct entire clade sequence
 #######################################################
 res<-vector("list",7)
 names(res)<-c("M","A","B","C","D","CRF01","CRF02")
 for(c in 1:7)
-{
+{ 
   clades<-as.character(JPTdesign[,6+c])
   pepClade<-as.character(JPTdesign$Name[!is.na(clades)])
   start<-rep(0,length(pepClade))
@@ -26,7 +34,7 @@ for(c in 1:7)
   }
   ### I remove the unecessary characters at the end
   res[[c]]<-list(peptide=pepClade,start=start,end=end,consensus=substr(tmpSeq,start[1],end[length(pepClade)]))
-}
+}#res contains the peptides from each clade with their pos in the clade
 
 #########################################################
 #2.using MUSCLE to perform alignment of multipe sequence
@@ -66,25 +74,19 @@ substrEx<-function(x,start,len,ignore="-"){
 
 
 ##read multi_aligned clade sequences from MUSCEL
-clade_seqs<-readFASTA(file="~/Programs/git/HIV.db/inst/extdata/MuscleMultipleAlignment.fasta")
-cladeNames<-unlist(lapply(clade_seqs,"[[",1))
-clade_seqs<-unlist(lapply(clade_seqs,"[[",2))
-names(clade_seqs)<-cladeNames
-clade_names<-c("M","A","B","C","D","CRF01","CRF02")
-HXB2_seq<-clade_seqs["HXB2"]
+
+clade_seqs<-cladeSeqs[-1]
+clade_names<-cladeNames[-1]
+HXB2_seq<-cladeSeqs[["HXB2"]]
 
 ##compute for each clade
-for(curCladeName in clade_names)
-{
+for(curCladeName in clade_names){
 	print(curCladeName)
-	 
-	curSeq<-clade_seqs[curCladeName]#get aligned clade seuqence
-	
+	curSeq<-clade_seqs[[curCladeName]]#get aligned clade seuqence
 	#get ordered peptide set from previous step
 	curClade<-res[[curCladeName]]
 	curPepClade<-curClade$peptide
 	nPep<-length(curPepClade)##totoal number of peptides in current clade
-	
 	#init the gap ranges
 #	ir_gap<-vector(mode="list",nPep)
 	NoGapRegions<-vector(mode="list",nPep)
@@ -95,22 +97,17 @@ for(curCladeName in clade_names)
 	align_start<-vector(mode="integer",nPep)	
 	align_end<-vector(mode="integer",nPep)
 	newPeps<-vector(mode="character",nPep)
-			
-	for(i in 1:nPep)#fetch pepetide sequentially from peptide set
-	{
+	for(i in 1:nPep){#fetch pepetide sequentially from peptide set
 		curPep<-curPepClade[i]#get pme peptide
 		#compute the new start position
-		if(i>1)
-		{
+		if(i>1){
 			nStep<-curClade$start[i]-curClade$start[i-1]
 			preSeq<-substrEx(curSeq,align_start[i-1],nStep)
 			nStep_new<-nchar(preSeq)#adjust steps by possible gaps
 			align_start[i]<-align_start[i-1]+nStep_new##get new start position for current peptide
-		}else
-		{
+		}else{
 			align_start[i]<-1
 		}
-				
 		print(align_start[i])
 	
 		##compute the new end position by including gaps
@@ -131,7 +128,6 @@ for(curCladeName in clade_names)
 		HXB2_pep<-substr(HXB2_seq,align_start[i],align_end[i])#get peptide sequence from HXB2 aligned sequence
 		gapRes<-matchPattern(pattern="-",HXB2_pep)##search for gaps
 		HXB2_end[i]<-HXB2_end[i]-length(gapRes)
-		 
 		
 		##save the relative gap positions for for visualization purpose 
 		ir_hide<-reduce(ranges(gapRes))
@@ -142,7 +138,7 @@ for(curCladeName in clade_names)
 #		names(ir_gap)[[i]]<-newPeps[i]
 		
 	}
-	res[[curCladeName]]$HXB2_positions<-IRanges(start=HXB2_start,end=HXB2_end,names=newPeps)	
+	res[[curCladeName]]$HXB2_positions<-IRanges(start=HXB2_start,end=HXB2_end,names=newPeps)
 	res[[curCladeName]]$aligned_positions<-IRanges(start=align_start,end=align_end,names=newPeps)
 #	res[[curCladeName]]$gaps<-ir_gap
 	res[[curCladeName]]$HXB2GapFilters<-as(IRangesList(NoGapRegions), "GappedRanges")
@@ -157,6 +153,7 @@ for(curCladeName in clade_names)
 
 hxb2_ir<-IRanges()
 ir_HXB2GapFilters<-as(IRangesList(),"GappedRanges")
+ir_aligned<-c()
 #gap_ir<-NULL
 for(i in 1:nrow(JPTdesign))
 {
@@ -166,7 +163,8 @@ for(i in 1:nrow(JPTdesign))
 	ind<-which(res[[curCladeName]]$peptide==curPep)
 	hxb2_ir<-c(hxb2_ir,res[[curCladeName]]$HXB2_positions[ind])
 #	gap_ir<-c(gap_ir,res[[curCladeName]]$gaps[ind])
-	ir_HXB2GapFilters<-c(ir_HXB2GapFilters,res[[curCladeName]]$HXB2GapFilters[ind])
+	#ir_HXB2GapFilters<-c(ir_HXB2GapFilters,res[[curCladeName]]$HXB2GapFilters[ind])
+        ir_aligned<-c(ir_aligned, names(res[[curCladeName]]$aligned_positions[ind]))
 }
 
 
@@ -176,9 +174,13 @@ for(i in 1:nrow(JPTdesign))
 #replace the names of range with original pep sequence
 names(hxb2_ir)<-as.character(JPTdesign$Name)
 clade<-!is.na(JPTdesign[,clade_names])
+shortClades<-c()#Clades as vector of char instead of matrix
+for(i in 1:1423){shortClades<-c(shortClades, paste(colnames(clade)[clade[i,]], collapse=","));}
+clade<-shortClades
 
-pep_hxb2<-RangedData(hxb2_ir,aligned_Seq,ir_HXB2GapFilters,clade,space="gp160")
-colnames(pep_hxb2)[2]<-"gapFilter"
+#pep_hxb2<-RangedData(hxb2_ir,aligned_Seq,ir_HXB2GapFilters,clade,space="gp160")
+pep_hxb2<-RangedData(hxb2_ir,ir_aligned,clade,space="gp160")
+#colnames(pep_hxb2)[2]<-"gapFilter"
 colnames(pep_hxb2)[1]<-"aligned"
 
 

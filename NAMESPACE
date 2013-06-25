@@ -1,4 +1,5 @@
 ##
 ## NAMESPACE
 ##
-importClassesFrom(pepStat, peptideSet)
+
+importClassesFrom(IRanges, RangedData)
