@@ -1,5 +1,1 @@
-##
-## NAMESPACE
-##
-
 importClassesFrom(IRanges, RangedData)
