@@ -14,11 +14,11 @@
 #' @importFrom pepStat makeZpepMatrix
 ##
 
-create_db <- function(ranges = IRanges(), ..., space = NULL, universe = NULL){
-  #df
-  if(is.null(ranges) & is.null(
-  #ir
-  db <- RangedData(ranges = IRanges(), ..., space = NULL, universe = NULL)
+create_db <- function(rd){
+  if(class(rd) != "RangedData"){
+    stop("`rd' must be an object of class 'RangedData'. Given: ",class(rd))
+  }
+  if(rd$peptu
   zs <- makeZpepMatrix(as.character(db$peptide))
   rownames(zs) <- NULL
   values(db)[[1]] <- cbind(values(db)[[1]], DataFrame(zs))

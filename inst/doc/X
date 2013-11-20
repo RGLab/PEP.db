@@ -1,4 +1,0 @@
-setGeneric("setX<-", function(object, value) standardGeneric("setX<-"))
-setReplaceMethod("setX", "c1", function(object, value){ object@x <- value; return(object);})
-setReplaceMethod("setX", "c2", function(object, value){ setX(object@c1) <- value; return(object);})
-

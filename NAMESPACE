@@ -1,1 +1,1 @@
-importClassesFrom(IRanges, RangedData)
+importClassesFrom(IRanges,RangedData)
