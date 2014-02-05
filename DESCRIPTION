@@ -8,9 +8,12 @@ Date: 2012-08-14
 Description: provide peptide collections for HIV and SIV
 License: Artistic-2.0
 Depends:
-    R(>= 2.15.0),
-    Biobase
+    R(>= 2.15.0)
 Imports:
-    IRanges
+    IRanges,
+Suggests:
+    knitr,
+    pepStat
 biocViews: Microarray
+VignetteBuilder: knitr
 Packaged: 2013-02-12 18:48:33 UTC; rsautera

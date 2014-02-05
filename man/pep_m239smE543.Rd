@@ -4,9 +4,10 @@
 \title{Peptide collection for SIV enveloppe}
 \format{A \code{RangedData} object. One row per peptide.}
 \usage{
-data(pep_m239smE543)
+  data(pep_m239smE543)
 }
 \description{
-Peptide collection for SIV enveloppe
+  Peptide collection for SIV enveloppe
 }
+\keyword{datasets}
 
