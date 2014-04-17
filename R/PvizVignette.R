@@ -1,3 +1,7 @@
+#' @name restab_long
+#' 
+NULL
+
 #' @name PvizVignette
 #' @aliases pepEx
 #' @aliases freqEx
