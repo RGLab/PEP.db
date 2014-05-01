@@ -16,4 +16,3 @@ Suggests:
     pepStat
 biocViews: Microarray
 VignetteBuilder: knitr
-Packaged: 2013-02-12 18:48:33 UTC; rsautera
