@@ -82,7 +82,7 @@ newRD <- RangedData(data)
 @
 
 Then the function \texttt{create\_db} in \texttt{pepStat} should be used to add the Zscore information to the newly constructed RangedData object. This is required for the normalization of \texttt{peptideSet}.
-<<create-db>>=
+<<create-db, message=FALSE>>=
 library(pepStat)
 new_pep <- create_db(newRD)
 @
