@@ -3,17 +3,18 @@
 \name{pep_mac239}
 \alias{pep_mac239}
 \title{Reference peptide dataset for SIV enveloppe}
-\format{A \code{RangedData} object. One row per peptide.}
+\format{A \code{GRanges} object. One row per peptide.}
 \usage{
 data(pep_mac239)
 }
 \description{
-A peptide dataset created from the multiple alignment of the reference sequence mac239 from LANL database, our mac239 and E660 subtypes.
+A peptide dataset created from the multiple alignment of the
+reference sequence mac239 from LANL database, our mac239 and E660 subtypes.
 }
 \details{
 \itemize{
   \item{peptides:}{ The rownames are 15mers from the envelope of mac239 and E660.}
-  \item{space:}{ An information regarding the genomic location of the peptide.}
+  \item{seqnames:}{ An information regarding the genomic location of the peptide.}
   \item{ranges:}{ The start and end coordinate of the peptide based on the coordinates of the reference mac239.}
   \item{aligned:}{ The aligned column represents the peptide as it is aligned in the multiple alignment.}
   \item{peptideNb:}{Number of the corresponding mac239 peptide.}

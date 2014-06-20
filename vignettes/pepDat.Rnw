@@ -1,0 +1,64 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{The pepDat users guide}
+%\VignetteKeywords{Storage of peptide collections}
+%\VignettePackage{pepDat}
+\documentclass[11pt]{article}
+
+\usepackage{hyperref}
+\usepackage[hmargin=2cm, vmargin=3cm]{geometry}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(tidy=TRUE)
+@
+
+
+\title{The pepDat User Guide}
+\author{Renan Sauteraud\footnote{rsautera@fhcrc.org}}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+%\newpage
+
+\section{Introduction}
+\texttt{pepDat} is an R package that stores sample files, data for vignettes and peptide collections. It is intended to be used in conjunction with other packages for peptide analysis and visualisation: \texttt{pepStat} anf \texttt{Pviz}.
+
+As with any R package, it should first be loaded in the session
+<<loading-package, message=FALSE>>=
+library(pepDat)
+@
+
+\section{Peptide collections}
+\subsection{Information}
+For each peptide, the following collections display information about the position relative to the reference sequence, the alignment, the trimmed alignment, the zSums for the physicochemical properties as well as the clades where they can be found.
+
+\subsection{Structure}
+The datasets in this package are \texttt{GRanges} objects. For more information about the class, its accessors and setters, please refer to \texttt{GenomicRanges} documentation.
+
+\subsection{pep\_hxb2}
+This collection is based on the alignment of the reference HIV sequence hxb2 and seven subtypes (clades) A, B, C, D, M, CRF01 and CRF02.
+
+\subsection{pep\_hxb2JPT}
+This collection adds a few more clades to the previous one: CM244, CON\_01\_AE, LAI\_A04321 and MN\_DD328842.
+
+\subsection{pep\_mac239}
+This collection is for SIV, with the clades mac239 and E660.
+
+\subsection{pep\_m239smE543}
+This collection is for SIV, with the clades mac239 and E543.
+
+\section{Loading the collections}
+The peptide collections can be loaded like any other R dataset.
+<<loading-collection>>=
+data(pep_hxb2)
+head(pep_hxb2)
+@
+
+\section{Create collections}
+While the package comes with datasets for HIV and SIV. It is possible to create new collections for different organisms or proteins using the \texttt{create\_db} function in \texttt{pepStat}. Please refer to \texttt{pepStat}'s user guide and ?create\_db for more information.
+
+
+\end{document}

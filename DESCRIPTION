@@ -1,18 +1,18 @@
-Package: PEP.db
+Package: pepDat
 Type: Package
-Title: Peptide microarray database
+Title: Peptide microarray data package
 Version: 0.99.0
 Author: Renan Sauteraud, Raphael Gottardo
 Maintainer: Renan Sauteraud <rsautera@fhcrc.org>
 Date: 2012-08-14
-Description: provide peptide collections for HIV and SIV
+Description: Provides sample files and data for the vignettes of pepStat and
+    Pviz as well as peptide collections for HIV and SIV.
 License: Artistic-2.0
 Depends:
     R(>= 3.0.0)
 Imports:
-    IRanges,
+    GenomicRanges
 Suggests:
-    knitr,
-    pepStat
+    knitr
 biocViews: Microarray
 VignetteBuilder: knitr
